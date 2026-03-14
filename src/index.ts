@@ -1,6 +1,26 @@
-import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
 import { bot } from './bot';
 import { startScraper } from './scraper';
+import { setupWebhook } from './webhook';
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(express.json());
+
+// Set up webhook routes
+setupWebhook(app);
+
+// Simple health check
+app.get('/', (req, res) => {
+  res.send('Trading Bot is running...');
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
+});
 
 console.log('Botni ishga tushirishga harakat qilyapman...');
 
